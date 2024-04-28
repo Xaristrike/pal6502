@@ -4,11 +4,7 @@ This program simulates a 6502 processor.
 
 ## Prerequisites
 
-You need
-```
-make
-clang
-```
+You need make and clang (optionaly it can be compiled with gcc).
 
 ## Building
 
