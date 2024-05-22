@@ -2,9 +2,11 @@
 
 This program simulates a 6502 processor.
 
+The build script makes an executable for Linux.
+
 ## Prerequisites
 
-You need make and clang (optionaly it can be compiled with gcc).
+You need make and clang (optionaly it can be built with gcc).
 
 ## Building
 
