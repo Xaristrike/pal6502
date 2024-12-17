@@ -1,4 +1,4 @@
-## A softcore processor
+# A softcore processor
 
 This program simulates a 6502 processor.
 
@@ -20,7 +20,7 @@ To remove the executable run
 make clean
 ```
 
-## It is still incomplete
+### It is still incomplete
 
 
 ## More information
