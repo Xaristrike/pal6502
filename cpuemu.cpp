@@ -9,12 +9,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+/* TYPES */
+/* Byte is 8 bits */
 using Byte = unsigned char;
+
+/* Word is 16 bits */
 using Word = unsigned short;
 
+/* uint32 is whatever the compiler decides, but probably 32 bits */
 using uint32 = unsigned int;
-
+/* TYPES */
 
 /* Memory image */
 struct MEM
