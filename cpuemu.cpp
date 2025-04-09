@@ -230,13 +230,13 @@ struct CPU
 	
 	/* NOTE: ISA */
 	static constexpr Byte
-		INS_LDA_IMM		= 0xA9,			/* LOAD IMMEDIATE */
-		INS_LDA_ZP		= 0xA5,			/* LOAD FROM MEMORY */
-		INS_LDA_ZPX		= 0xB5,			/* LOAD FROM MEMORY OFFSET BY X (the register) */
-										
-		INS_JSR			= 0x20			/* JUMP TO SUBROUTINE */
-		;
-
+	INS_LDA_IMM		= 0xA9,			/* LOAD IMMEDIATE */
+	INS_LDA_ZP		= 0xA5,			/* LOAD FROM MEMORY */
+	INS_LDA_ZPX		= 0xB5,			/* LOAD FROM MEMORY OFFSET BY X (the register) */
+	
+	INS_JSR			= 0x20			/* JUMP TO SUBROUTINE */
+	;
+	
 	
 	/* Function to set two of the status flags,
 	 * 
