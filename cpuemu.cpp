@@ -238,7 +238,9 @@ struct CPU
 	INS_LDA_ZP		= 0xA5,			/* LOAD FROM MEMORY */
 	INS_LDA_ZPX		= 0xB5,			/* LOAD FROM MEMORY OFFSET BY X (the register) */
 	
-	INS_JSR			= 0x20			/* JUMP TO SUBROUTINE */
+	INS_JSR			= 0x20,			/* JUMP TO SUBROUTINE */
+	
+	INS_NOP			= 0xEA			/* NO OPERATION (skips the current instruction) */
 	;
 	
 	
@@ -265,11 +267,28 @@ struct CPU
 	/* This is the function that executes instructions
 	 * 
 	 * This gets ran when the program runs.
-	 * 
-	 * Takes in the number of cycles to be ran,
-	 * 
-	 * and a memory structure.
-	 */
+				 * 
+				 * This is the third step.
+				 */
+				
+				/* Load immediate.
+				 * 
+				 * Reads one byte from the address
+				 * 
+				 * in the program counter,
+				 * 
+				 * and stores it in the accumulator.
+				 * 
+				 * Example:
+				 * 
+				 * If the program counter is 7,
+				 * 
+				 * this will read from memory at address 7.
+				 * 
+				 * (End of example)
+				 * 
+				 * The result goes in the accumulator.
+				 */
 	
 	void Exec(uint32 cycles, MEM& memory)
 	{
@@ -465,6 +484,30 @@ struct CPU
 					break;
 				}
 				
+				/* NOP (No OPeration)
+				 * 
+				 * Skips the current instruction
+				 * 
+				 * without affecting any registers.
+				 * 
+				 * Increments the program counter.
+				 * 
+				 * Takes two cycles to execute
+				 */
+				
+				case INS_NOP:
+				{
+					
+					/* Take an extra clock cycle because
+					 * 
+					 * the original 6502 took 2 cycles to execute a NOP.
+					 */
+					cycles--;
+					
+					/* End */
+					break;
+				}
+				
 				
 				
 				
@@ -498,17 +541,23 @@ int main()
 	 */
 	
 	/*--CHEATING--*/
-	mem[0xFFFC] = CPU::INS_JSR; /* reset vector */
+	mem[0xFFFC] = CPU::INS_JSR; /* reset vector */ 
 	
 	mem[0xFFFD] = 0x42;
 	mem[0xFFFE] = 0x42;
 	
 	mem[0x4242] = CPU::INS_LDA_IMM;
 	mem[0x4243] = 0x84;
+	mem[0x4244] = CPU::INS_NOP;
+	mem[0x4245] = CPU::INS_NOP;
+	mem[0x4246] = CPU::INS_NOP;
+	mem[0x4247] = CPU::INS_NOP;
+	mem[0x4248] = CPU::INS_NOP;
+	mem[0x4249] = CPU::INS_NOP;
 	/*--CHEATING--*/
 	
-	/* Run for 8 cycles */
-	cpu.Exec(8, mem);
+	/* Run for an !!EVEN!! number of cycles */
+	cpu.Exec(20, mem);
 	
 	/* Hapily exit. */
 	return 0;
