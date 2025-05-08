@@ -484,24 +484,28 @@ struct CPU
 					break;
 				}
 				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				/* NOP (No OPeration)
 				 * 
 				 * Skips the current instruction
 				 * 
 				 * without affecting any registers.
 				 * 
-				 * Increments the program counter.
-				 * 
-				 * Takes two cycles to execute
+				 * Takes two cycles to execute.
 				 */
 				
 				case INS_NOP:
 				{
 					
-					/* Take an extra clock cycle because
-					 * 
-					 * the original 6502 took 2 cycles to execute a NOP.
-					 */
+					/* Take an extra clock cycle. */
 					cycles--;
 					
 					/* End */
@@ -558,6 +562,29 @@ int main()
 	
 	/* Run for an !!EVEN!! number of cycles */
 	cpu.Exec(20, mem);
+	
+	/* DEBUGGING */
+	for (auto &ref : mem.Data)
+	{
+		if(ref == 0)
+		{ 
+			/* One of these:
+			 * 
+			 * printf("%x\n", ref);
+			 * 
+			 * printf(".");
+			 * 
+			 * printf("-");
+			 *
+			 * continue;
+			 */
+			
+			continue;
+		}
+		
+		else { printf("0x%x\n", ref); }
+	}
+	/* DEBUGGING */
 	
 	/* Hapily exit. */
 	return 0;
