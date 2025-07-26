@@ -18,6 +18,10 @@ using Word = unsigned short;
 
 /* uint32 is whatever the compiler decides, but probably 32 bits */
 using uint32 = unsigned int;
+
+/* It kind of goes for all types that
+ *
+ * they are whatever the compiler decides. */
 /* TYPES */
 
 /* Memory image */
@@ -541,7 +545,7 @@ int main()
 	 * 
 	 * Later this will be replaced by a file.
 	 * 
-	 * The program will read the instructions from a file.
+	 * The program will read the instructions from the file.
 	 */
 	
 	/*--CHEATING--*/
@@ -563,7 +567,7 @@ int main()
 	/* Run for an !!EVEN!! number of cycles */
 	cpu.Exec(20, mem);
 	
-	/* DEBUGGING */
+	/*--DEBUGGING--*/
 	for (auto &ref : mem.Data)
 	{
 		if(ref == 0)
@@ -584,8 +588,8 @@ int main()
 		
 		else { printf("0x%x\n", ref); }
 	}
-	/* DEBUGGING */
+	/*--DEBUGGING--*/
 	
-	/* Hapily exit. */
+	/* Hapily exit. :) */
 	return 0;
 }
