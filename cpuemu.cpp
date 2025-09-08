@@ -460,11 +460,11 @@ struct CPU
 				 * 
 				 * then read the data from memory at address 15,
 				 * 
-				 * and then it will use 1514 as an address,
+				 * and then it will use the read word as an address,
 				 * 
-				 * and finally it will jump to 1514,
+				 * and finally it will jump to the read word,
 				 * 
-				 * by setting the program counter to 1514.
+				 * by setting the program counter to the read word.
 				 */
 				
 				case INS_JSR:
