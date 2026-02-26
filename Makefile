@@ -10,7 +10,6 @@ default: all
 .PHONY: all
 all: clean $(PROJECT_NAME)
 
-.PHONY: $(PROJECT_NAME)
 $(PROJECT_NAME): $(SRC)
 	@$(CC) $(CFLAGS) -o $(PROJECT_NAME) $(SRC)
 	@./$(PROJECT_NAME)

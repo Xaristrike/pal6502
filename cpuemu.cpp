@@ -224,7 +224,25 @@ struct CPU
 		
 		cycles--;
 		
-		return data; 
+		return data;
+	}
+	
+	/* Function to read one byte from memory.
+	 * 
+	 * It takes a 16-bit address (word).
+	 * 
+	 * It returns one byte.
+	 * 
+	 * It takes one cycle to execute.
+	 */
+	
+	Byte ReadByteW(uint32& cycles, Word address, MEM& memory)
+	{
+		Byte data = memory[address];
+		
+		cycles--;
+		
+		return data;
 	}
 	
 	/* Instruction set architecture.
@@ -238,9 +256,10 @@ struct CPU
 	
 	/* NOTE: ISA */
 	static constexpr Byte
-	INS_LDA_IMM		= 0xA9,			/* LOAD IMMEDIATE */
-	INS_LDA_ZP		= 0xA5,			/* LOAD FROM MEMORY */
-	INS_LDA_ZPX		= 0xB5,			/* LOAD FROM MEMORY OFFSET BY X (the register) */
+	INS_LDA_IMM		= 0xA9,			/* LOAD ACCUMULATOR WITH IMMEDIATE */
+	INS_LDA_ZP		= 0xA5,			/* LOAD ACCUMULATOR FROM MEMORY WITH ZERO PAGE ADDRESSING */
+	INS_LDA_ZPX		= 0xB5,			/* LOAD ACCUMULATOR FROM MEMORY WITH ZERO PAGE ADDRESSING OFFSET BY X (the register) */
+	INS_LDA_ABS		= 0xAD,			/* LOAD ACCUMULATOR FROM MEMORY WITH ABSOLUTE ADDRESS */
 	
 	INS_JSR			= 0x20,			/* JUMP TO SUBROUTINE */
 	
@@ -420,13 +439,16 @@ struct CPU
 					/* Add the value stored at register X. */
 					zeropageaddr += X;
 					
-					/* Take an extra clock cycle
+					/* Take two extra clock cycles
 					 * 
 					 * because the original 6502
 					 * 
-					 * also took an extra clock cycle.
+					 * took 4 cycles in total
+					 * 
+					 * to execute this instruction.
 					 */
 					
+					cycles--;
 					cycles--;
 					
 					/* Read the data and store it into the accumulator (A). */
@@ -436,6 +458,48 @@ struct CPU
 					LDA_set_status();
 					
 					/* End */
+					break;
+				}
+				
+				/* Load with absolute address
+				 * 
+				 * Reads the next two bytes in memory
+				 * 
+				 * Then uses that as an address.
+				 * 
+				 * Reads data from that address
+				 * 
+				 * and puts it in Accumulator register.
+				 * 
+				 * Example:
+				 * 
+				 * If the next two bytes are 81 and 52.
+				 * 
+				 * This will read the data from memory address 5281.
+				 * 
+				 * And put it into the accumulator.
+				 */
+				
+				case INS_LDA_ABS:
+				{
+					// Read the next two bytes to get the address
+					Word address = FetchWord(cycles, memory);
+					
+					// Read the data from the address into the accumulator
+					A = ReadByteW(cycles, address, memory);
+					
+					/* Take one more cycle.
+					 * 
+					 * Because the original 6502
+					 * 
+					 * took two cycles to execute this command.
+					 */
+					
+					cycles--;
+					
+					/* Calculate the flags. */
+					LDA_set_status();
+					
 					break;
 				}
 				
@@ -488,14 +552,9 @@ struct CPU
 					break;
 				}
 				
+				/* REST OF INSTRUCTIONS BLOCK START */
 				
-				
-				
-				
-				
-				
-				
-				
+				/* REST OF UNSTRUCTIONS BLOCK END */
 				
 				/* NOP (No OPeration)
 				 * 
