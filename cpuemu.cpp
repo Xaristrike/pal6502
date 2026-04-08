@@ -258,8 +258,8 @@ struct CPU
 	static constexpr Byte
 	INS_LDA_IMM		= 0xA9,			/* LOAD ACCUMULATOR WITH IMMEDIATE */
 	INS_LDA_ZP		= 0xA5,			/* LOAD ACCUMULATOR FROM MEMORY WITH ZERO PAGE ADDRESSING */
-	INS_LDA_ZPX		= 0xB5,			/* LOAD ACCUMULATOR FROM MEMORY WITH ZERO PAGE ADDRESSING OFFSET BY X (the register) */
 	INS_LDA_ABS		= 0xAD,			/* LOAD ACCUMULATOR FROM MEMORY WITH ABSOLUTE ADDRESS */
+	INS_LDA_ZPX		= 0xB5,			/* LOAD ACCUMULATOR FROM MEMORY WITH ZERO PAGE ADDRESSING OFFSET BY X (the register) */
 	
 	INS_JSR			= 0x20,			/* JUMP TO SUBROUTINE */
 	
@@ -612,6 +612,7 @@ int main()
 	
 	mem[0xFFFD] = 0x42;
 	mem[0xFFFE] = 0x42;
+	mem[0xFFFF] = CPU::INS_NOP; /* Add a NOP at the last address because why not */
 	
 	mem[0x4242] = CPU::INS_LDA_IMM;
 	mem[0x4243] = 0x84;
@@ -627,7 +628,10 @@ int main()
 	cpu.Exec(20, mem);
 	
 	/*--DEBUGGING--*/
-	for (auto &ref : mem.Data)
+	
+	unsigned int debugging_address = 0;
+	
+	for (const auto &ref : mem.Data)
 	{
 		if(ref == 0)
 		{ 
@@ -642,10 +646,22 @@ int main()
 			 * continue;
 			 */
 			
+			debugging_address++;
+			
 			continue;
 		}
 		
-		else { printf("0x%x\n", ref); }
+		else
+		{
+			// Print the address
+			printf("%04X:  ", debugging_address);
+			
+			// Print the data
+			printf("0x%02X\n", mem[debugging_address]);
+			
+			debugging_address++;
+			
+		}
 	}
 	/*--DEBUGGING--*/
 	
